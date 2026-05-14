@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Simple Todo</title>
+<style>
+body{font-family:system-ui,Arial,sans-serif;background:#282c34;color:#ddd;display:flex;flex-direction:column;align-items:center;padding:2rem;}
+nav a{color:#61dafb;margin:0 .5rem;}
+#newTask{padding:.5rem;width:80%;max-width:400px;margin-top:1rem;}
+#addBtn{padding:.5rem 1rem;margin-left:.5rem;background:#61dafb;color:#000;border:none;border-radius:4px;cursor:pointer;}
+ul{list-style:none;padding:0;width:80%;max-width:400px;}
+li{background:#3a3f47;padding:.5rem;margin-top:.5rem;border-radius:4px;display:flex;justify-content:space-between;align-items:center;}
+li button{background:none;border:none;color:#ff5555;cursor:pointer;}
+</style>
+</head>
+<body>
+<nav>
+<a href="index.html">Weather</a>
+<a href="news.html">News</a>
+<a href="reddit.html">Reddit</a>
+<a href="jokes.html">Jokes</a>
+<a href="quote.html">Quote</a>
+<a href="todo.html">Todo</a>
+</nav>
+<h1>Todo List</h1>
+<input id="newTask" placeholder="New task..."/><button id="addBtn">Add</button>
+<ul id="list"></ul>
+<script>
+function load(){
+  const tasks=JSON.parse(localStorage.getItem('tasks')||'[]');
+  const ul=document.getElementById('list');
+  ul.innerHTML='';
+  tasks.forEach((t,i)=>{
+    const li=document.createElement('li');
+    li.textContent=t;
+    const del=document.createElement('button');
+    del.textContent='✖';
+    del.onclick=()=>{remove(i);};
+    li.appendChild(del);
+    ul.appendChild(li);
+  });
+}
+function add(){
+  const input=document.getElementById('newTask');
+  if(!input.value.trim())return;
+  const tasks=JSON.parse(localStorage.getItem('tasks')||'[]');
+  tasks.push(input.value.trim());
+  localStorage.setItem('tasks',JSON.stringify(tasks));
+  input.value='';
+  load();
+}
+function remove(idx){
+  const tasks=JSON.parse(localStorage.getItem('tasks')||'[]');
+  tasks.splice(idx,1);
+  localStorage.setItem('tasks',JSON.stringify(tasks));
+  load();
+}
+document.getElementById('addBtn').onclick=add;
+load();
+</script>
+</body>
+</html>

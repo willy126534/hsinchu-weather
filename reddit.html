@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reddit Hot Posts</title>
+    <style>
+        body {font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, sans-serif; background:#1a1a1a; color:#fff; margin:0; padding:2rem;}
+        nav a {color:#fff; margin-right:1rem; text-decoration:none;}
+        .post {background:#2a2a2a; padding:1rem; margin-bottom:1rem; border-radius:8px;}
+        .post a {color:#4da6ff;}
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Weather</a>
+        <a href="news.html">News</a>
+        <a href="reddit.html">Reddit</a>
+        <a href="jokes.html">Jokes</a>
+        <a href="quote.html">Quote</a>
+        <a href="todo.html">Todo</a>
+    </nav>
+    <h1>Top Reddit Posts (r/technology)</h1>
+    <div id="posts">Loading...</div>
+    <script>
+        async function loadPosts(){
+            const resp = await fetch('https://www.reddit.com/r/technology/top.json?limit=10');
+            const data = await resp.json();
+            const container = document.getElementById('posts');
+            container.innerHTML='';
+            data.data.children.forEach(item=>{
+                const p = document.createElement('div');
+                p.className='post';
+                const a = document.createElement('a');
+                a.href='https://reddit.com' + item.data.permalink;
+                a.target='_blank';
+                a.textContent=item.data.title;
+                p.appendChild(a);
+                const meta = document.createElement('div');
+                meta.style.fontSize='0.9rem';
+                meta.textContent=`👍 ${item.data.ups} | 💬 ${item.data.num_comments}`;
+                p.appendChild(meta);
+                container.appendChild(p);
+            });
+        }
+        loadPosts();
+    </script>
+</body>
+</html>
