@@ -1,0 +1,2 @@
+# Ignore generated and sensitive files
+secret_keys.md
